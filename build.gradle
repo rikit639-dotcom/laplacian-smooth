@@ -1,0 +1,60 @@
+plugins {
+    id 'java'
+}
+
+version = '1.0.0'
+group = 'org.openstreetmap.josm.plugins.laplaciansmooth'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compileOnly files('../cache/josm-tested.jar')
+}
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_11
+    targetCompatibility = JavaVersion.VERSION_11
+}
+
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+}
+
+processResources {
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+    from('src/main/resources') {
+        include 'data/*.lang'
+        include 'images/**/*'
+    }
+}
+
+jar {
+    manifest {
+        attributes(
+            'Manifest-Version': '1.0',
+            'Plugin-Name': 'laplacian-smooth',
+            'Plugin-Class': 'org.openstreetmap.josm.plugins.laplaciansmooth.LaplacianSmoothPlugin',
+            'Plugin-Version': version,
+            'Plugin-Date': new Date().format('yyyy-MM-dd'),
+            'Plugin-Description': 'Laplacian line smoothing for JOSM',
+            'Plugin-Author': 'JOSM Plugin Builder',
+            'Plugin-License': 'GPL v3+',
+            'Plugin-Mainversion': '19000',
+            'Plugin-Canloadatruntime': 'true',
+            'Plugin-Localizations': 'en, ru',
+            'Plugin-Icon': 'images/laplacian-smooth.png'
+        )
+    }
+    
+    from(projectDir) {
+        include 'LICENSE'
+        include 'README.md'
+    }
+    
+    from {
+        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+}
