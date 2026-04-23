@@ -1,0 +1,25 @@
+# Gradle
+.gradle/
+build/
+gradle-app.setting
+
+# Cache
+cache/
+
+# IDE
+.idea/
+*.iml
+.classpath
+.project
+.settings/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# JAR files (should not be in repo)
+*.jar
+!gradle/wrapper/gradle-wrapper.jar
